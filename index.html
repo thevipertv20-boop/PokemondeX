@@ -16,7 +16,6 @@
     <header>
         <div class="header-inner">
             <div class="logo-container">
-                <!-- Pokéball-Logo als SVG (bleibt in jeder Größe scharf) -->
                 <svg class="logo-ball" viewBox="0 0 100 100" aria-hidden="true">
                     <circle cx="50" cy="50" r="46" fill="#f8fafc" />
                     <path d="M4 50a46 46 0 0 1 92 0z" fill="#ef4444" />
@@ -30,6 +29,7 @@
                     <p>Entdecke die Welt der Pokémon</p>
                 </div>
             </div>
+
             <div class="search-container">
                 <div class="search-field">
                     <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -39,24 +39,14 @@
                     <input id="searchInput" type="text" placeholder="Pokémon suchen..." aria-label="Pokémon suchen"
                         onkeydown="searchOnEnter(event)" oninput="resetSearchIfEmpty()">
                 </div>
-                <button class="search-button" onclick="searchPokemon()">suchen</button>
+                <button class="search-button" onclick="searchPokemon()">Suchen</button>
             </div>
         </div>
     </header>
+
     <main>
-        <div id="pokemonContainer">
-            <!-- Test-Karten (werden jetzt per JavaScript aus der API erzeugt)
-            <div class="pokemon-card">
-                <h2>Bulbasaur</h2>
-                <img src="./img/poke-ball.png" alt="">
-            </div>
-            <div class="pokemon-card">
-                <h2>Ivysaur</h2>
-                <img src="./img/poke-ball.png" alt="">
-            </div>
-            -->
-        </div>
-        <!-- wird erst angezeigt, wenn die ersten Pokémon geladen sind und es weitere gibt -->
+        <div id="pokemonContainer"></div>
+
         <div class="load-more-container">
             <button id="loadMoreButton" class="load-more-button d-none" onclick="loadMorePokemon()">
                 <span class="load-more-spinner" aria-hidden="true"></span>
@@ -64,20 +54,24 @@
             </button>
         </div>
     </main>
-    <dialog id="pokemonDialog">
-        <div id="dialogContent"></div>
-        <div class="dialog-buttons">
-            <button onclick="closeDialog()">
-                Schließen
-            </button>
+
+    <dialog id="pokemonDialog" onclick="closeDialogOnBackdrop(event)" onkeydown="dialogKeyNavigation(event)"
+        aria-label="Pokémon-Details">
+        <div class="dialog-inner">
+            <div id="dialogContent"></div>
+            <div class="dialog-buttons">
+                <button onclick="closeDialog()">Schließen</button>
+            </div>
         </div>
     </dialog>
+
     <footer>
         <div class="footer-content">
             <div>© 2025 Pokedex</div>
             <div>Powered by PokeAPI</div>
         </div>
     </footer>
+
     <script src="db.js"></script>
     <script src="templates.js"></script>
     <script src="script.js"></script>
