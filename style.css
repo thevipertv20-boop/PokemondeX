@@ -1,0 +1,918 @@
+/* =========================================
+   GRUNDEINSTELLUNGEN / FARBEN
+   ========================================= */
+
+:root {
+    --bg-dark: #050b1a;
+    --bg-navy: #0b1530;
+    --cyan: #22d3ee;
+    --violet: #8b5cf6;
+    --text: #e6edf7;
+    --text-muted: #94a3b8;
+
+    --glass-bg: rgba(15, 23, 42, 0.45);
+    --glass-bg-strong: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-blur: 14px;
+
+    --radius-l: 22px;
+    --radius-m: 14px;
+    --radius-pill: 999px;
+
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text);
+    background-color: var(--bg-dark);
+}
+
+/* Hintergrundbild auf eigener, fixierter Ebene: füllt immer den ganzen Bildschirm,
+   bleibt beim Scrollen ruhig stehen und wird durch "cover" nicht verzerrt */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-color: var(--bg-dark);
+    background-image: url("./img/Hintergrund-Bild.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Dunkles, leicht farbiges Overlay für gute Lesbarkeit */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 15% 0%, rgba(34, 211, 238, 0.15), transparent 45%),
+        radial-gradient(circle at 85% 100%, rgba(139, 92, 246, 0.18), transparent 50%),
+        linear-gradient(180deg, rgba(5, 11, 26, 0.55), rgba(5, 11, 26, 0.8));
+}
+
+/* =========================================
+   HEADER (Glassmorphism)
+   ========================================= */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(8, 14, 32, 0.72), rgba(8, 14, 32, 0.5));
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* feine Cyan-Violett-Linie unter dem Header */
+header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--violet), transparent);
+    opacity: 0.6;
+}
+
+/* Inhalt so breit wie das Kartenraster */
+.header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo-ball {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    filter:
+        drop-shadow(0 0 12px rgba(34, 211, 238, 0.45))
+        drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.logo-container:hover .logo-ball {
+    transform: rotate(-20deg);
+}
+
+.logo-text h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+    color: #fff;
+}
+
+.logo-text h1 span {
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.logo-text p {
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+/* Suche */
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted);
+    pointer-events: none;
+    transition: color var(--transition);
+}
+
+.search-field:focus-within .search-icon {
+    color: var(--cyan);
+}
+
+header input {
+    width: 300px;
+    height: 46px;
+    padding: 0 20px 0 44px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-pill);
+    outline: none;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+header input::placeholder {
+    color: var(--text-muted);
+}
+
+header input:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+header input:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--cyan);
+    box-shadow:
+        0 0 0 3px rgba(34, 211, 238, 0.18),
+        0 0 22px rgba(34, 211, 238, 0.25);
+}
+
+.search-button {
+    height: 46px;
+    padding: 0 24px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: capitalize;
+    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(139, 92, 246, 0.4);
+    transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+}
+
+.search-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 8px 26px rgba(34, 211, 238, 0.45);
+}
+
+.search-button:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+}
+
+/* =========================================
+   MAIN / KARTENRASTER (CSS Grid)
+   ========================================= */
+
+main {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 32px;
+}
+
+#pokemonContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+}
+
+/* =========================================
+   POKÉMON-KARTE
+   ========================================= */
+
+.pokemon-card {
+    /* --type-color wird im Template pro Pokémon gesetzt */
+    --type-color: var(--cyan);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 16px 20px;
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    isolation: isolate;
+    cursor: pointer;
+    /* Glas, leicht in der Typfarbe getönt */
+    background:
+        linear-gradient(160deg,
+            color-mix(in srgb, var(--type-color) 22%, transparent) 0%,
+            rgba(15, 23, 42, 0.35) 55%,
+            rgba(15, 23, 42, 0.55) 100%);
+    backdrop-filter: blur(12px) saturate(130%);
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+    border: 1px solid color-mix(in srgb, var(--type-color) 28%, rgba(255, 255, 255, 0.1));
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        border-color var(--transition);
+}
+
+/* feiner Lichtreflex oben auf dem Glas */
+.pokemon-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 35%);
+    pointer-events: none;
+}
+
+.pokemon-card:hover {
+    transform: translateY(-10px);
+    border-color: color-mix(in srgb, var(--type-color) 75%, transparent);
+    box-shadow:
+        0 22px 45px rgba(0, 0, 0, 0.5),
+        0 0 28px color-mix(in srgb, var(--type-color) 55%, transparent),
+        0 0 60px color-mix(in srgb, var(--type-color) 25%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Kopfzeile mit ID */
+.pokemon-card-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pokemon-id {
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-pill);
+}
+
+/* Bildbereich mit leuchtender Plattform und Pokéball-Wasserzeichen */
+.pokemon-image {
+    position: relative;
+    width: 100%;
+    height: 170px;
+    margin-top: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Glow in der Typfarbe */
+.pokemon-image::before {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        color-mix(in srgb, var(--type-color) 55%, transparent) 0%,
+        color-mix(in srgb, var(--type-color) 15%, transparent) 45%,
+        transparent 70%);
+    opacity: 0.8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+/* Pokéball-Umriss als dezentes Wasserzeichen */
+.pokemon-image::after {
+    content: "";
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.07);
+    background:
+        radial-gradient(circle, transparent 17px, rgba(255, 255, 255, 0.07) 18px, rgba(255, 255, 255, 0.07) 20px, transparent 21px),
+        linear-gradient(transparent calc(50% - 1px), rgba(255, 255, 255, 0.07) calc(50% - 1px), rgba(255, 255, 255, 0.07) calc(50% + 1px), transparent calc(50% + 1px));
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pokemon-image img {
+    position: relative;
+    z-index: 1;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.5));
+    transition: transform var(--transition), filter var(--transition);
+}
+
+.pokemon-card:hover .pokemon-image img {
+    transform: translateY(-6px) scale(1.08);
+    filter:
+        drop-shadow(0 18px 18px rgba(0, 0, 0, 0.55))
+        drop-shadow(0 0 14px color-mix(in srgb, var(--type-color) 50%, transparent));
+}
+
+.pokemon-card:hover .pokemon-image::before {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+.pokemon-card:hover .pokemon-image::after {
+    transform: rotate(25deg);
+}
+
+.pokemon-card h2 {
+    margin: 10px 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Typ-Badges */
+.pokemon-types {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.type-badge {
+    --badge-color: var(--cyan);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px 5px 9px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #fff;
+    background: color-mix(in srgb, var(--badge-color) 22%, rgba(15, 23, 42, 0.4));
+    border: 1px solid color-mix(in srgb, var(--badge-color) 60%, transparent);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--badge-color) 25%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* farbiger Punkt im Badge */
+.type-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--badge-color);
+    box-shadow: 0 0 8px var(--badge-color);
+}
+
+.type-icon {
+    width: 14px;
+    height: 14px;
+}
+
+
+/* ältere Kartenklassen (aus dem auskommentierten Template) bleiben nutzbar */
+.pokemon-header {
+    display: flex;
+    gap: 6px;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.pokemon-middle {
+    height: 145px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pokemon-middle img {
+    width: 135px;
+    height: 135px;
+    object-fit: contain;
+}
+
+.pokemon-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+}
+
+.type-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =========================================
+   SUCHE: KEINE TREFFER
+   ========================================= */
+
+.no-results {
+    grid-column: 1 / -1;
+    max-width: 520px;
+    margin: 40px auto;
+    padding: 36px 28px;
+    text-align: center;
+    color: var(--text);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow), 0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+.no-results-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    border-radius: 50%;
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.4);
+}
+
+.no-results h2 {
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.no-results p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.no-results strong {
+    color: var(--cyan);
+}
+
+/* =========================================
+   MEHR LADEN
+   ========================================= */
+
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.load-more-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 34px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #fff;
+    background:
+        linear-gradient(var(--bg-navy), var(--bg-navy)) padding-box,
+        linear-gradient(135deg, var(--cyan), var(--violet)) border-box;
+    border: 2px solid transparent;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 20px rgba(139, 92, 246, 0.25);
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.load-more-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    background:
+        linear-gradient(135deg, var(--cyan), var(--violet)) padding-box,
+        linear-gradient(135deg, var(--cyan), var(--violet)) border-box;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 30px rgba(34, 211, 238, 0.45);
+}
+
+.load-more-button:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 4px;
+}
+
+.load-more-button:disabled {
+    cursor: wait;
+    opacity: 0.85;
+}
+
+/* kleiner Lade-Kreis, nur sichtbar während geladen wird */
+.load-more-spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-top-color: var(--cyan);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.load-more-button.is-loading .load-more-spinner {
+    display: inline-block;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+   OVERLAY (alt, bleibt erhalten)
+   ========================================= */
+
+#overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.overlay-card {
+    width: 420px;
+    min-height: 550px;
+    background: var(--glass-bg-strong);
+    color: var(--text);
+    border-radius: var(--radius-l);
+    padding: 24px;
+    text-align: center;
+}
+
+.overlay-card img {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+}
+
+.overlay-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.overlay-nav button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* =========================================
+   DIALOG
+   ========================================= */
+
+dialog {
+    width: 450px;
+    max-width: 92vw;
+    margin: auto;
+    padding: 28px;
+    text-align: center;
+    color: var(--text);
+    background: rgba(11, 21, 48, 0.85);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-l);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(139, 92, 246, 0.25);
+}
+
+dialog::backdrop {
+    background-color: rgba(5, 11, 26, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.dialog-img {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.5));
+}
+
+.stat-box {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.bar {
+    width: 100%;
+    height: 22px;
+    margin-bottom: 14px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    padding-left: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 22px;
+    color: #fff;
+    border-radius: var(--radius-pill);
+}
+
+.hp {
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+}
+
+.attack {
+    background: linear-gradient(90deg, #f97316, #fbbf24);
+}
+
+.defense {
+    background: linear-gradient(90deg, #3b82f6, var(--cyan));
+}
+
+.dialog-buttons {
+    margin-top: 20px;
+}
+
+.dialog-buttons button {
+    padding: 10px 24px;
+    font-family: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.dialog-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(34, 211, 238, 0.4);
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+footer {
+    margin-top: auto;
+    padding: 22px;
+    color: var(--text-muted);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-top: 1px solid var(--glass-border);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.footer-content p {
+    margin: 0;
+}
+
+/* =========================================
+   TYP-VERLÄUFE (für type-circle aus altem Template)
+   ========================================= */
+
+.grass { background: linear-gradient(135deg, #9be15d, #4caf50); }
+.fire { background: linear-gradient(135deg, #ffb347, #ff5722); }
+.water { background: linear-gradient(135deg, #89f7fe, #4f7cff); }
+.bug { background: linear-gradient(135deg, #d4fc79, #96b000); }
+.normal { background: linear-gradient(135deg, #d7d2cc, #a8a878); }
+.poison { background: linear-gradient(135deg, #d66efd, #8e44ad); }
+.electric { background: linear-gradient(135deg, #fff176, #fbc02d); }
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 900px) {
+    .header-inner {
+        padding: 14px 20px;
+    }
+
+    header input {
+        width: 220px;
+    }
+
+    .logo-text p {
+        display: none;
+    }
+
+    main {
+        padding: 32px 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 12px 16px 14px;
+    }
+
+    .logo-container {
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .logo-ball {
+        width: 36px;
+        height: 36px;
+    }
+
+    .logo-text h1 {
+        font-size: 26px;
+    }
+
+    .search-field {
+        flex: 1;
+        min-width: 0;
+    }
+
+    header input {
+        width: 100%;
+        height: 42px;
+    }
+
+    .search-button {
+        height: 42px;
+        padding: 0 18px;
+    }
+
+    main {
+        padding: 24px 16px;
+    }
+
+    #pokemonContainer {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 16px;
+    }
+
+    .pokemon-card {
+        padding: 12px 10px 16px;
+        border-radius: var(--radius-m);
+    }
+
+    /* auf Touch-Geräten schwächerer Hover-Sprung */
+    .pokemon-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .pokemon-image {
+        height: 125px;
+    }
+
+    .pokemon-image::before {
+        width: 115px;
+        height: 115px;
+    }
+
+    .pokemon-image::after {
+        width: 105px;
+        height: 105px;
+    }
+
+    .pokemon-image img {
+        width: 112px;
+        height: 112px;
+    }
+
+    .pokemon-card h2 {
+        font-size: 16px;
+        margin: 6px 0 10px;
+    }
+
+    .pokemon-id {
+        font-size: 11px;
+        padding: 2px 8px;
+    }
+
+    .type-badge {
+        font-size: 10px;
+        padding: 4px 9px 4px 7px;
+    }
+
+    dialog {
+        padding: 18px;
+    }
+
+    .dialog-img {
+        width: 160px;
+        height: 160px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 360px) {
+    #pokemonContainer {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+    }
+
+    .pokemon-image img {
+        width: 96px;
+        height: 96px;
+    }
+}
+
+/* weniger Bewegung für Nutzer, die das so eingestellt haben */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
