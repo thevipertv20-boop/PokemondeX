@@ -249,7 +249,7 @@ main {
 
 #pokemonContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 24px;
 }
 
@@ -339,8 +339,9 @@ main {
 
 .pokemon-card-top {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 4px 8px;
     padding: 12px 14px;
     background: rgba(255, 255, 255, 0.04);
     border-bottom: 1px solid color-mix(in srgb, var(--type-color) 22%, rgba(255, 255, 255, 0.06));
@@ -370,9 +371,7 @@ main {
     letter-spacing: 0.3px;
     text-transform: capitalize;
     color: #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -391,6 +390,7 @@ main {
 
 .pokemon-image {
     position: relative;
+    flex-grow: 1;
     width: 100%;
     height: 160px;
     padding: 10px 0;
@@ -475,7 +475,7 @@ main {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 12px 5px 9px;
+    padding: 4px 12px 4px 5px;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.8px;
@@ -489,10 +489,10 @@ main {
     -webkit-backdrop-filter: blur(6px);
 }
 
-.type-badge::before {
-    content: "";
-    width: 8px;
-    height: 8px;
+.type-badge-icon {
+    width: 18px;
+    height: 18px;
+    padding: 3px;
     border-radius: 50%;
     background: var(--badge-color);
     box-shadow: 0 0 8px var(--badge-color);
@@ -622,7 +622,7 @@ footer {
 
 dialog {
     --type-color: var(--cyan);
-    width: 460px;
+    width: 380px;
     max-width: 94vw;
     max-height: 92vh;
     margin: auto;
@@ -638,7 +638,7 @@ dialog {
     backdrop-filter: blur(20px) saturate(140%);
     -webkit-backdrop-filter: blur(20px) saturate(140%);
     border: 1px solid color-mix(in srgb, var(--type-color) 45%, transparent);
-    border-radius: 28px;
+    border-radius: 24px;
     box-shadow:
         0 30px 70px rgba(0, 0, 0, 0.65),
         0 0 50px color-mix(in srgb, var(--type-color) 35%, transparent),
@@ -663,15 +663,15 @@ dialog[open]::backdrop {
 }
 
 .dialog-inner {
-    padding: 0 0 24px;
+    padding: 0 0 18px;
 }
 
 .dialog-buttons {
-    margin-top: 20px;
+    margin-top: 14px;
 }
 
 .dialog-buttons button {
-    padding: 10px 24px;
+    padding: 8px 20px;
     font-family: inherit;
     font-weight: 600;
     color: #fff;
@@ -695,22 +695,22 @@ dialog[open]::backdrop {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 56px 64px 8px;
+    padding: 44px 52px 4px;
 }
 
 .dialog-hero .pokemon-id {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 16px;
+    left: 16px;
 }
 
 .dialog-close {
     position: absolute;
-    top: 14px;
-    right: 14px;
-    width: 38px;
-    height: 38px;
-    font-size: 16px;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
     color: #fff;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -727,8 +727,8 @@ dialog[open]::backdrop {
 
 .dialog-image {
     position: relative;
-    width: 230px;
-    height: 230px;
+    width: 170px;
+    height: 170px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -752,7 +752,7 @@ dialog[open]::backdrop {
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.08);
     background:
-        radial-gradient(circle, transparent 26px, rgba(255, 255, 255, 0.08) 27px, rgba(255, 255, 255, 0.08) 30px, transparent 31px),
+        radial-gradient(circle, transparent 19px, rgba(255, 255, 255, 0.08) 20px, rgba(255, 255, 255, 0.08) 22px, transparent 23px),
         linear-gradient(transparent calc(50% - 1px), rgba(255, 255, 255, 0.08) calc(50% - 1px), rgba(255, 255, 255, 0.08) calc(50% + 1px), transparent calc(50% + 1px));
     animation: ball-spin 30s linear infinite;
 }
@@ -773,13 +773,13 @@ dialog[open]::backdrop {
     position: absolute;
     top: 55%;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 4px;
-    font-size: 30px;
+    padding-bottom: 3px;
+    font-size: 24px;
     line-height: 1;
     color: #fff;
     background: rgba(255, 255, 255, 0.08);
@@ -792,11 +792,11 @@ dialog[open]::backdrop {
 }
 
 .dialog-nav-prev {
-    left: 14px;
+    left: 12px;
 }
 
 .dialog-nav-next {
-    right: 14px;
+    right: 12px;
 }
 
 .dialog-nav:hover:not(:disabled) {
@@ -818,12 +818,12 @@ dialog[open]::backdrop {
 }
 
 .dialog-body {
-    padding: 0 28px;
+    padding: 0 22px;
 }
 
 .dialog-name {
-    margin: 6px 0 12px;
-    font-size: 30px;
+    margin: 4px 0 10px;
+    font-size: 24px;
     font-weight: 700;
     text-transform: capitalize;
     color: #fff;
@@ -833,22 +833,22 @@ dialog[open]::backdrop {
 .dialog-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 14px;
 }
 
 .info-box {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 12px;
+    gap: 2px;
+    padding: 8px 10px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-m);
 }
 
 .info-box span {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.8px;
     text-transform: uppercase;
@@ -856,14 +856,14 @@ dialog[open]::backdrop {
 }
 
 .info-box strong {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     color: #fff;
 }
 
 .dialog-section-title {
-    margin: 24px 0 12px;
-    font-size: 13px;
+    margin: 16px 0 10px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 1.2px;
     text-transform: uppercase;
@@ -877,31 +877,31 @@ dialog[open]::backdrop {
 .stat-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 7px;
 }
 
 .stat-row {
     display: grid;
-    grid-template-columns: 150px 36px 1fr;
+    grid-template-columns: 136px 32px 1fr;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     text-align: left;
 }
 
 .stat-name {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-muted);
 }
 
 .stat-value {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     text-align: right;
     color: #fff;
 }
 
 .stat-bar {
-    height: 8px;
+    height: 6px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-pill);
     overflow: hidden;
@@ -919,8 +919,8 @@ dialog[open]::backdrop {
 }
 
 .stat-total {
-    margin-top: 4px;
-    padding-top: 10px;
+    margin-top: 2px;
+    padding-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -991,9 +991,31 @@ dialog[open]::backdrop {
 
 /* ========== Responsive / Mobile ========== */
 
+@media (max-width: 1200px) {
+    #pokemonContainer {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1000px) {
+    .pokemon-card-top {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+    }
+
+    .pokemon-card h2 {
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 900px) {
     .header-inner {
         padding: 14px 20px;
+    }
+
+    #pokemonContainer {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 
     header input {
@@ -1115,7 +1137,7 @@ dialog[open]::backdrop {
 
     .type-badge {
         font-size: 10px;
-        padding: 4px 9px 4px 7px;
+        padding: 3px 9px 3px 4px;
     }
 
     dialog {
@@ -1123,18 +1145,18 @@ dialog[open]::backdrop {
     }
 
     .dialog-hero {
-        padding: 52px 52px 4px;
+        padding: 42px 44px 4px;
     }
 
     .dialog-image {
-        width: 170px;
-        height: 170px;
+        width: 150px;
+        height: 150px;
     }
 
     .dialog-nav {
-        width: 38px;
-        height: 38px;
-        font-size: 26px;
+        width: 34px;
+        height: 34px;
+        font-size: 22px;
     }
 
     .dialog-nav-prev {
@@ -1150,16 +1172,17 @@ dialog[open]::backdrop {
     }
 
     .dialog-name {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .stat-row {
-        grid-template-columns: 118px 32px 1fr;
+        grid-template-columns: 130px 28px 1fr;
         gap: 8px;
     }
 
     .stat-name {
         font-size: 12px;
+        white-space: nowrap;
     }
 
     .footer-content {
@@ -1177,6 +1200,124 @@ dialog[open]::backdrop {
     .pokemon-image img {
         width: 96px;
         height: 96px;
+    }
+
+    .search-icon {
+        left: 13px;
+    }
+
+    header input {
+        padding: 0 12px 0 38px;
+        font-size: 14px;
+    }
+
+    .search-button {
+        padding: 0 14px;
+    }
+
+    .stat-row {
+        grid-template-columns: 120px 28px 1fr;
+    }
+
+    .stat-name {
+        font-size: 11px;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    dialog {
+        --dialog-width: min(620px, 94vw);
+        --hero-width: 220px;
+        width: var(--dialog-width);
+        max-height: 96vh;
+    }
+
+    .dialog-inner {
+        padding: 0 0 12px;
+    }
+
+    .dialog-buttons {
+        margin-top: 8px;
+    }
+
+    #dialogContent {
+        display: grid;
+        grid-template-columns: var(--hero-width) 1fr;
+        column-gap: 20px;
+        padding-right: 20px;
+    }
+
+    .dialog-body {
+        display: contents;
+    }
+
+    .dialog-hero {
+        grid-area: 1 / 1;
+        padding: 30px 44px 2px;
+    }
+
+    .dialog-close {
+        right: calc(var(--hero-width) - var(--dialog-width) + 14px);
+    }
+
+    .dialog-image {
+        width: 96px;
+        height: 96px;
+    }
+
+    .dialog-nav {
+        width: 34px;
+        height: 34px;
+        font-size: 22px;
+    }
+
+    .dialog-nav-prev {
+        left: 8px;
+    }
+
+    .dialog-nav-next {
+        right: 8px;
+    }
+
+    .dialog-name {
+        grid-area: 2 / 1;
+        margin: 2px 0 6px;
+        padding: 0 12px;
+        font-size: 20px;
+    }
+
+    #dialogContent .pokemon-types {
+        grid-area: 3 / 1;
+    }
+
+    .dialog-info {
+        grid-area: 4 / 1;
+        margin: 10px 0 0 16px;
+    }
+
+    .info-box {
+        padding: 6px 8px;
+    }
+
+    .dialog-section-title {
+        grid-area: 1 / 2;
+        align-self: start;
+        margin: 46px 0 0;
+    }
+
+    .stat-list {
+        grid-area: 1 / 2 / 5 / 3;
+        align-self: start;
+        gap: 6px;
+        margin-top: 72px;
+    }
+
+    .stat-row {
+        grid-template-columns: 136px 32px 1fr;
+    }
+
+    .stat-name {
+        font-size: 12px;
     }
 }
 

@@ -64,7 +64,17 @@ function pokemonTypesTemplate(types) {
     for (let i = 0; i < types.length; i++) {
         let typeName = types[i].type.name;
         let color = getTypeColor(typeName);
-        html += `<span class="type-badge" style="--badge-color:${color}">${typeName}</span>`;
+        html += `
+            <span class="type-badge" style="--badge-color:${color}">
+                <img
+                    class="type-badge-icon"
+                    src="https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons/${typeName}.svg"
+                    alt=""
+                    onerror="this.remove()"
+                >
+                ${typeName}
+            </span>
+        `;
     }
     return html;
 }
