@@ -1,47 +1,77 @@
 let allPokemonBasicData;
 const allPokemonDetailData = [];
+const pokemonCache = new Map();
 const pokemonLimit = 25;
 let currentOffset = 0;
 let isLoadingMore = false;
 let currentDialogIndex = -1;
+let isSearchActive = false;
 
 
 async function init() {
-    allPokemonBasicData = await getBasicPokemonData();
-    await fetchDetailedPokemonData();
+    try {
+        allPokemonBasicData = await getBasicPokemonData();
+        await fetchDetailedPokemonData();
+    } catch (error) {
+        console.error("Pokémon konnten nicht geladen werden:", error);
+        return;
+    }
     renderPokemon();
     updateLoadMoreButton();
 }
 
 
 async function getBasicPokemonData() {
-    let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${pokemonLimit}&offset=${currentOffset}`);
-    let pokemonData = await response.json();
-    return pokemonData;
+    return fetchJson(`https://pokeapi.co/api/v2/pokemon?limit=${pokemonLimit}&offset=${currentOffset}`);
+}
+
+
+async function fetchJson(url) {
+    let response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
+    return response.json();
 }
 
 
 async function fetchDetailedPokemonData() {
-    for (let i = 0; i < allPokemonBasicData.results.length; i++) {
-        let pokemonUrl = allPokemonBasicData.results[i].url;
-        let response = await fetch(pokemonUrl);
-        let pokemonDetailData = await response.json();
-        allPokemonDetailData.push(pokemonDetailData);
+    let newPokemon = await Promise.all(allPokemonBasicData.results.map(pokemon => getPokemonDetail(pokemon)));
+    allPokemonDetailData.push(...newPokemon);
+    return newPokemon;
+}
+
+
+function getPokemonDetail(pokemon) {
+    if (!pokemonCache.has(pokemon.name)) {
+        let request = fetchJson(pokemon.url);
+        request.catch(() => pokemonCache.delete(pokemon.name));
+        pokemonCache.set(pokemon.name, request);
     }
+    return pokemonCache.get(pokemon.name);
 }
 
 
 function renderPokemon(pokemonList = allPokemonDetailData, searchTerm = "") {
     let container = document.getElementById("pokemonContainer");
+    isSearchActive = pokemonList !== allPokemonDetailData;
     if (pokemonList.length === 0) {
         container.innerHTML = noResultsTemplate(searchTerm);
         return;
     }
+    container.innerHTML = pokemonCardsHtml(pokemonList);
+}
+
+
+function appendPokemon(pokemonList) {
+    document.getElementById("pokemonContainer").insertAdjacentHTML("beforeend", pokemonCardsHtml(pokemonList));
+}
+
+
+function pokemonCardsHtml(pokemonList) {
     let html = "";
     for (let i = 0; i < pokemonList.length; i++) {
         html += pokemonCardTemplate(pokemonList[i]);
     }
-    container.innerHTML = html;
+    return html;
 }
 
 
@@ -52,15 +82,15 @@ async function loadMorePokemon() {
     currentOffset += pokemonLimit;
     try {
         allPokemonBasicData = await getBasicPokemonData();
-        await fetchDetailedPokemonData();
+        let newPokemon = await fetchDetailedPokemonData();
+        if (document.getElementById("searchInput").value.trim() !== "") {
+            searchPokemon();
+        } else {
+            appendPokemon(newPokemon);
+        }
     } catch (error) {
         currentOffset -= pokemonLimit;
         console.error("Weitere Pokémon konnten nicht geladen werden:", error);
-    }
-    if (document.getElementById("searchInput").value.trim() !== "") {
-        searchPokemon();
-    } else {
-        renderPokemon();
     }
     isLoadingMore = false;
     setLoadMoreButtonLoading(false);
@@ -87,7 +117,7 @@ function setLoadMoreButtonLoading(isLoading) {
 function searchPokemon() {
     let searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
     if (searchTerm === "") {
-        renderPokemon();
+        if (isSearchActive) renderPokemon();
         return;
     }
     let foundPokemon = allPokemonDetailData.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm));
@@ -101,7 +131,7 @@ function searchOnEnter(event) {
 }
 
 function resetSearchIfEmpty() {
-    if (document.getElementById("searchInput").value.trim() === "") {
+    if (isSearchActive && document.getElementById("searchInput").value.trim() === "") {
         renderPokemon();
     }
 }

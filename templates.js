@@ -25,7 +25,7 @@ function pokemonCardTemplate(pokemonData) {
                 <h2>${pokemonData.name}</h2>
             </div>
             <div class="pokemon-image">
-                <img src="${image}" alt="${pokemonData.name}" loading="lazy">
+                <img src="${image}" alt="${pokemonData.name}" loading="lazy" decoding="async">
             </div>
             <div class="pokemon-card-bottom">
                 ${pokemonTypeIconsTemplate(pokemonData.types)}
